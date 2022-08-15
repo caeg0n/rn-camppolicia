@@ -1,0 +1,40 @@
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+
+export default function Register({navigation}) {
+  const buttonClickedHandler = () => {
+  };
+
+  useEffect(() => {
+  });
+
+  function registerr(){
+    navigation.navigate('Home')
+  };
+
+  return (
+    <View style={styles.screen}>
+    <Text style={styles.title}>PROCURE UM POLICIAL NA DELEGACIA DA PM OU EM UMA VIATURA E PEÇA PARA REGISTRAR O SEU APLICATIVO</Text>
+    <QRCode value={`${global.URL_BASE}/device_uuid=${global.UUID}`}/>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  screen: {
+    paddingTop:150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title:{
+    padding:10,
+    marginBottom:20,
+    backgroundColor: 'green',
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
+    flexWrap: 'wrap'
+  }
+});
+
