@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-} from "react-native";
-import { v4 } from 'uuid';
+import { View, Text, StyleSheet, Image, Alert } from "react-native";
+import { v4 } from "uuid";
 
 import AwesomeButtonRick from "react-native-really-awesome-button/src/themes/rick";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useSelector, useDispatch } from "react-redux";
 import { setUUID } from "../redux/actions";
@@ -32,12 +28,17 @@ export default function Home({ navigation }) {
     console.log("You have been clicked a button!");
   };
 
-  useEffect(()=>{
+  useEffect(() => {
+    // limpa asyncstorage
+    // const clearData = async () => {
+    //   await AsyncStorage.clear()
+    // };
+    // clearData().catch(console.error);
     const newUuid = v4();
-    if (uuid == 'undefined' && uuid == '' && uuid == "" && uuid == null){
+    if (uuid.length < 1) {
       dispatch(setUUID(newUuid));
     }
-  },[]);
+  }, []);
 
   function register() {
     navigation.navigate("Register");
@@ -110,7 +111,6 @@ export default function Home({ navigation }) {
       </AwesomeButtonRick>
 
       <RenderABRegister registerState={true} />
-
     </View>
   );
 }
@@ -169,5 +169,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
 });
