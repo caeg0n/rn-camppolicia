@@ -6,7 +6,6 @@ import {
   Image,
 } from "react-native";
 import { v4 } from 'uuid';
-import DeviceInfo from 'react-native-device-info';
 
 import AwesomeButtonRick from "react-native-really-awesome-button/src/themes/rick";
 
@@ -34,7 +33,10 @@ export default function Home({ navigation }) {
   };
 
   useEffect(()=>{
-    dispatch(setUUID(v4()));
+    const newUuid = v4();
+    if (uuid == 'undefined' && uuid == '' && uuid == "" && uuid == null){
+      dispatch(setUUID(newUuid));
+    }
   },[]);
 
   function register() {
