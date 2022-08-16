@@ -24,7 +24,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.k43g0n.camppolicia"
     },
     "web": {
       "favicon": "./assets/favicon.png"

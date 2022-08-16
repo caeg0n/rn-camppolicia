@@ -5,13 +5,16 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
+import { v4 } from 'uuid';
+import DeviceInfo from 'react-native-device-info';
+
 import AwesomeButtonRick from "react-native-really-awesome-button/src/themes/rick";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setName, setAge, getCities } from "../redux/actions";
+import { setUUID } from "../redux/actions";
 
 export default function Home({ navigation }) {
-  const { name, age, cities } = useSelector((state) => state.userReducer);
+  const { uuid } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
 
   let denuncia_text_color = "#000";
@@ -31,14 +34,10 @@ export default function Home({ navigation }) {
   };
 
   useEffect(()=>{
-    dispatch(getCities());
-    console.log(cities);
+    dispatch(setUUID(v4()));
   },[]);
 
   function register() {
-    dispatch(setName('jjjjjj'));
-    dispatch(setAge(10));
-    console.log(age)
     navigation.navigate("Register");
   }
 
@@ -64,7 +63,7 @@ export default function Home({ navigation }) {
   return (
     <View style={styles.screen}>
       <Image style={styles.img} source={require("../../assets/logo.png")} />
-      <Text style={styles.uuid}>ID DO DISPOSITIVO: {global.UUID}</Text>
+      <Text style={styles.uuid}>ID DO DISPOSITIVO: {uuid}</Text>
       <Text>
         <Text style={styles.status}>STATUS DO REGISTRO: </Text>
         <Text style={styles.status}>não registrado</Text>
