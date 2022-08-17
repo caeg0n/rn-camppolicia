@@ -10,7 +10,5 @@ npm-debug.*
 *.orig.*
 web-build/
 
-caeg0n.txt
-
 # macOS
 .DS_Store

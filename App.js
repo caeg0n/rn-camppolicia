@@ -11,7 +11,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 //import globeVar from "./GlobalVar";
 //global.URL_BASE = "http://192.168.7.14:3000";
-//global.UUID = v4();
+//global.UID = v4();
 
 const Stack = createStackNavigator();
 export default function App (){
