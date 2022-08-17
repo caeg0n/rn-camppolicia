@@ -1,28 +1,16 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { v4 } from "uuid";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setUUID } from "../redux/actions";
 import AwesomeButtonRick from "react-native-really-awesome-button/src/themes/rick";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useSelector, useDispatch } from "react-redux";
-import { setUUID } from "../redux/actions";
 
 export default function Home({ navigation }) {
   const { uuid } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
-
-  let denuncia_text_color = "#000";
-  let denuncia_background_color = "#00FF00";
-  let emergencia_text_color = "#000";
-  let emergencia_background_color = "#FF0000";
-
-  let denuncia_disabled_state = false;
-  let emergencia_disabled_state = false;
-  let atividade_disabled_state = false;
-
-  let atividade_background_color = "#FF4500";
-  let atividade_text_color = "#000";
+  let isRegistered = false;
 
   const buttonClickedHandler = () => {
     console.log("You have been clicked a button!");
@@ -45,8 +33,8 @@ export default function Home({ navigation }) {
   }
 
   function RenderABRegister(props) {
-    const registerState = props.registerState;
-    if (registerState) {
+    const isRegistered = props.isRegistered;
+    if (isRegistered) {
       return (
         <AwesomeButtonRick
           style={styles.ab_register}
@@ -74,11 +62,11 @@ export default function Home({ navigation }) {
 
       <AwesomeButtonRick
         style={styles.ab_denuncia}
-        type="primary"
-        backgroundDarker="#000"
-        backgroundColor={denuncia_background_color}
-        textColor={denuncia_text_color}
-        disabled={denuncia_disabled_state}
+        type="disabled"
+        backgroundDarker={isRegistered ? "#000" : "grey"}
+        backgroundColor={isRegistered ? "#00FF00" : "grey"}
+        textColor={isRegistered ? "#000" : "white"}
+        disabled={!isRegistered}
         width={250}
       >
         DENUNCIA
@@ -86,11 +74,11 @@ export default function Home({ navigation }) {
 
       <AwesomeButtonRick
         style={styles.ab_emergencia}
-        type="primary"
-        backgroundDarker="#000"
-        backgroundColor={emergencia_background_color}
-        textColor={emergencia_text_color}
-        disabled={emergencia_disabled_state}
+        type="disabled"
+        backgroundDarker={isRegistered ? "#000" : "grey"}
+        backgroundColor={isRegistered ? "#00FF00" : "grey"}
+        textColor={isRegistered ? "#000" : "white"}
+        disabled={!isRegistered}
         width={250}
         height={80}
         onPress={buttonClickedHandler}
@@ -99,18 +87,19 @@ export default function Home({ navigation }) {
       </AwesomeButtonRick>
 
       <AwesomeButtonRick
-        type="primary"
-        backgroundDarker="#000"
-        backgroundColor={atividade_background_color}
-        textColor={atividade_text_color}
-        disabled={atividade_disabled_state}
-        width={250}
         style={styles.ab_atividade_suspeita}
+        type="disabled"
+        backgroundDarker={isRegistered ? "#000" : "grey"}
+        backgroundColor={isRegistered ? "#00FF00" : "grey"}
+        textColor={isRegistered ? "#000" : "white"}
+        disabled={!isRegistered}
+        width={250}
       >
         ATIDADE SUSPEITA
       </AwesomeButtonRick>
-
-      <RenderABRegister registerState={true} />
+      
+      <RenderABRegister isRegistered={!isRegistered} />
+      
     </View>
   );
 }
