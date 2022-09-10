@@ -2,23 +2,30 @@ import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { v4 } from "uuid";
 import { useSelector, useDispatch } from "react-redux";
-import { setUUID } from "../redux/actions";
+import { setUUID, getIsRegistered } from "../redux/actions";
 import AwesomeButtonRick from "react-native-really-awesome-button/src/themes/rick";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home({ navigation }) {
-  const { uuid } = useSelector((state) => state.userReducer);
+  const { uuid,is_registered } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
-  let isRegistered = false;
+  let isRegistered = is_registered.is_registered;
 
   const buttonClickedHandler = () => {
     console.log("You have been clicked a button!");
   };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(getIsRegistered(uuid));
+      isRegistered = is_registered.is_registered;
+    }, [])
+  );
+
   useEffect(() => {
     // limpa asyncstorage
-    // const clearData = async () => {
+    //const clearData = async () => {
     //   await AsyncStorage.clear()
     // };
     // clearData().catch(console.error);
@@ -57,28 +64,48 @@ export default function Home({ navigation }) {
       <Text style={styles.uuid}>ID DO DISPOSITIVO: {uuid}</Text>
       <Text>
         <Text style={styles.status}>STATUS DO REGISTRO: </Text>
-        <Text style={styles.status}>não registrado</Text>
+        <Text
+          style={
+            isRegistered == 'true'
+              ? styles.status_registered
+              : styles.status_not_registered
+          }
+        >
+          {isRegistered == 'true' ? "OK" : "NÃO REGISTRADO"}
+        </Text>
       </Text>
 
       <AwesomeButtonRick
         style={styles.ab_denuncia}
         type="disabled"
-        backgroundDarker={isRegistered ? "#000" : "grey"}
-        backgroundColor={isRegistered ? "#00FF00" : "grey"}
-        textColor={isRegistered ? "#000" : "white"}
-        disabled={!isRegistered}
+        backgroundDarker={isRegistered == 'true' ? "#000" : "grey"}
+        backgroundColor={isRegistered == 'true' ? "#00FF00" : "grey"}
+        textColor={isRegistered == 'true' ? "#000" : "white"}
+        disabled={isRegistered != 'true'}
         width={250}
       >
         DENUNCIA
       </AwesomeButtonRick>
 
       <AwesomeButtonRick
+        style={styles.ab_atividade_suspeita}
+        type="disabled"
+        backgroundDarker={isRegistered == 'true' ? "#000" : "grey"}
+        backgroundColor={isRegistered == 'true' ? "#FF6600" : "grey"}
+        textColor={isRegistered == 'true' ? "#000" : "white"}
+        disabled={isRegistered != 'true'}
+        width={250}
+      >
+        ATIVIDADE SUSPEITA
+      </AwesomeButtonRick>
+
+      <AwesomeButtonRick
         style={styles.ab_emergencia}
         type="disabled"
-        backgroundDarker={isRegistered ? "#000" : "grey"}
-        backgroundColor={isRegistered ? "#00FF00" : "grey"}
-        textColor={isRegistered ? "#000" : "white"}
-        disabled={!isRegistered}
+        backgroundDarker={isRegistered == 'true' ? "#000" : "grey"}
+        backgroundColor={isRegistered == 'true' ? "#FF0000" : "grey"}
+        textColor={isRegistered == 'true' ? "#000" : "white"}
+        disabled={isRegistered != 'true'}
         width={250}
         height={80}
         onPress={buttonClickedHandler}
@@ -86,20 +113,7 @@ export default function Home({ navigation }) {
         EMERGÊNCIA
       </AwesomeButtonRick>
 
-      <AwesomeButtonRick
-        style={styles.ab_atividade_suspeita}
-        type="disabled"
-        backgroundDarker={isRegistered ? "#000" : "grey"}
-        backgroundColor={isRegistered ? "#00FF00" : "grey"}
-        textColor={isRegistered ? "#000" : "white"}
-        disabled={!isRegistered}
-        width={250}
-      >
-        ATIDADE SUSPEITA
-      </AwesomeButtonRick>
-      
-      <RenderABRegister isRegistered={!isRegistered} />
-      
+      <RenderABRegister isRegistered={isRegistered != 'true'} />
     </View>
   );
 }
@@ -121,7 +135,21 @@ const styles = StyleSheet.create({
 
   status: {
     justifyContent: "center",
-    fontSize: 10,
+    fontSize: 15,
+  },
+
+  status_registered: {
+    justifyContent: "center",
+    fontSize: 15,
+    color: "green",
+    fontWeight: "bold",
+  },
+
+  status_not_registered: {
+    justifyContent: "center",
+    fontSize: 15,
+    color: "red",
+    fontWeight: "bold",
   },
 
   ab_emergencia: {

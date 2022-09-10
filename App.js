@@ -9,10 +9,6 @@ import { Provider } from 'react-redux';
 import { Store, persistor } from './src/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 
-//import globeVar from "./GlobalVar";
-//global.URL_BASE = "http://192.168.7.14:3000";
-//global.UID = v4();
-
 const Stack = createStackNavigator();
 export default function App (){
   return(
