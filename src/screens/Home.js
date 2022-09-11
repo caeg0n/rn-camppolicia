@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { v4 } from "uuid";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,12 +9,14 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 //import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home({ navigation }) {
+  let to = useRef(null);
   const [emergency_count, setEmergencyCount] = useState(5);
   const { uuid,is_registered } = useSelector((state) => state.userReducer);
   let isRegistered = is_registered == 'undefined' ? 'false' : is_registered.is_registered;
   const dispatch = useDispatch();
   const buttonClickedHandler = () => {
-    setTimeout(() => setEmergencyCount(5), 5000);
+    clearTimeout(to.current);
+    to.current = setTimeout(() => setEmergencyCount(5), 5000);
     setEmergencyCount(emergency_count - 1);
   };
 
