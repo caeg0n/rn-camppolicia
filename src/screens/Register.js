@@ -25,7 +25,7 @@ export default function Register({ navigation }) {
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>
-        PROCURE UM POLICIAL NA DELEGACIA DA PM OU EM UMA VIATURA E PEÇA PARA
+        PROCURE UM POLICIAL NA DELEGACIA DA PM OU EM UMA VIATURA E PESSA PARA
         REGISTRAR O SEU APLICATIVO
       </Text>
       <QRCode value={`${global.URL_BASE}/device_uuid=${global.UUID}`} />

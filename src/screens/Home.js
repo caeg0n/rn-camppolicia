@@ -1,25 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { v4 } from "uuid";
 import { useSelector, useDispatch } from "react-redux";
 import { setUUID, getIsRegistered } from "../redux/actions";
 import AwesomeButtonRick from "react-native-really-awesome-button/src/themes/rick";
 import { useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+//import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home({ navigation }) {
+  const [emergency_count, setEmergencyCount] = useState(5);
   const { uuid,is_registered } = useSelector((state) => state.userReducer);
+  let isRegistered = is_registered == 'undefined' ? 'false' : is_registered.is_registered;
   const dispatch = useDispatch();
-  let isRegistered = is_registered.is_registered;
-
   const buttonClickedHandler = () => {
-    console.log("You have been clicked a button!");
+    setTimeout(() => setEmergencyCount(5), 5000);
+    setEmergencyCount(emergency_count - 1);
   };
 
   useFocusEffect(
     React.useCallback(() => {
       dispatch(getIsRegistered(uuid));
-      isRegistered = is_registered.is_registered;
+      if (is_registered != 'undefined')
+        isRegistered = is_registered.is_registered;
     }, [])
   );
 
@@ -46,7 +49,8 @@ export default function Home({ navigation }) {
         <AwesomeButtonRick
           style={styles.ab_register}
           type="secondary"
-          width={250}
+          width={wp('90%')}
+          height={hp('10%')}
           disabled={false}
           onPress={register}
         >
@@ -56,6 +60,19 @@ export default function Home({ navigation }) {
     } else {
       return null;
     }
+  }
+
+  function RenderEmergencyButton(){
+    if (emergency_count == 5){
+      return(<Text style={styles.ab_text_emergencia}>EMERGÊNCIA</Text>)
+    }else{
+      if (emergency_count > 0){
+        return(<Text style={styles.ab_text_emergencia}>FALTAM {emergency_count} CLICKS</Text>)
+      }else{
+        setEmergencyCount(5);
+        return(<Text style={styles.ab_text_emergencia}>EMERGÊNCIA</Text>)
+      }
+    } 
   }
 
   return (
@@ -82,9 +99,10 @@ export default function Home({ navigation }) {
         backgroundColor={isRegistered == 'true' ? "#00FF00" : "grey"}
         textColor={isRegistered == 'true' ? "#000" : "white"}
         disabled={isRegistered != 'true'}
-        width={250}
+        height={hp('10%')}
+        width={wp('90%')}
       >
-        DENUNCIA
+        DENÚNCIA
       </AwesomeButtonRick>
 
       <AwesomeButtonRick
@@ -94,7 +112,8 @@ export default function Home({ navigation }) {
         backgroundColor={isRegistered == 'true' ? "#FF6600" : "grey"}
         textColor={isRegistered == 'true' ? "#000" : "white"}
         disabled={isRegistered != 'true'}
-        width={250}
+        height={hp('10%')}
+        width={wp('90%')}
       >
         ATIVIDADE SUSPEITA
       </AwesomeButtonRick>
@@ -106,11 +125,11 @@ export default function Home({ navigation }) {
         backgroundColor={isRegistered == 'true' ? "#FF0000" : "grey"}
         textColor={isRegistered == 'true' ? "#000" : "white"}
         disabled={isRegistered != 'true'}
-        width={250}
-        height={80}
+        width={wp('90%')}
+        height={hp('20%')}
         onPress={buttonClickedHandler}
       >
-        EMERGÊNCIA
+        <RenderEmergencyButton/>
       </AwesomeButtonRick>
 
       <RenderABRegister isRegistered={isRegistered != 'true'} />
@@ -121,18 +140,20 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   img: {
     position: "absolute",
-    top: -15,
+    top: hp('-3%'),
   },
   screen: {
-    paddingTop: 150,
+    paddingTop: hp('30%'),
     justifyContent: "center",
     alignItems: "center",
   },
   uuid: {
+    marginTop:hp('-10%'),
+    paddingTop:hp('6%'),
     justifyContent: "center",
     fontSize: 10,
   },
-
+  
   status: {
     justifyContent: "center",
     fontSize: 15,
@@ -153,36 +174,34 @@ const styles = StyleSheet.create({
   },
 
   ab_emergencia: {
-    marginTop: 15,
+    marginTop: hp('4%'),
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
+  },
+
+  ab_text_emergencia: {
+    fontSize: 15,
+    fontWeight: "bold"
   },
 
   ab_denuncia: {
-    marginTop: 15,
+    marginTop: hp('4%'),
     justifyContent: "center",
     alignItems: "center",
   },
 
   ab_atividade_suspeita: {
-    marginTop: 15,
+    marginTop: hp('4%'),
     justifyContent: "center",
     alignItems: "center",
   },
 
   ab_register: {
-    marginTop: 30,
-    marginBottom: 15,
-  },
-
-  stretch: {
-    width: 200,
-    height: 200,
-    resizeMode: "stretch",
+    marginTop: wp('4%')
   },
 
   ab_no_registered: {
-    marginTop: 15,
+    marginTop: wp('4%'),
     justifyContent: "center",
     alignItems: "center",
   },
