@@ -4,8 +4,9 @@ import { SET_USER_UUID, GET_IS_REGISTERED } from "./actions";
 const initialState = {
   name: "",
   cities: [],
-  uuid:"",
-  is_registered:{}
+  uuid: "",
+  is_registered: {},
+  url_base: ""
 };
 
 function userReducer(state = initialState, action) {
