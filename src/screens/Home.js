@@ -44,6 +44,10 @@ export default function Home({ navigation }) {
     navigation.navigate("Register");
   }
 
+  function denunciaClick(){
+    navigation.navigate("Denuncia");
+  }
+
   function RenderABRegister(props) {
     const isRegistered = props.isRegistered;
     if (isRegistered) {
@@ -103,6 +107,7 @@ export default function Home({ navigation }) {
         disabled={isRegistered != 'true'}
         height={hp('10%')}
         width={wp('90%')}
+        onPress={denunciaClick}
       >
         DENÚNCIA
       </AwesomeButtonRick>
