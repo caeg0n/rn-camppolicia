@@ -51,7 +51,7 @@ export default function Denuncia({ navigation }) {
             <TextInput
               value={value}
               onChangeText={(value) => onChange(value)}
-              onBlur={onBlur}
+              onBlur={onBur}
               placeholder="joão da silva"
               style={styles.input}
             />
